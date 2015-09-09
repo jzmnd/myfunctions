@@ -7,12 +7,12 @@ Function List:
 
 Math:
 -----
-`adjAvSmooth(dataarray, N=10)  
-weibullPlot(dataarray)  
-numInt(function, a, b, step)  
-numDiff(y, x)  
-numDifference(y)  
-mean_sterr(x)  `
+`adjAvSmooth(dataarray, N=10)`
+`weibullPlot(dataarray)`
+`numInt(function, a, b, step)`
+`numDiff(y, x)`
+`numDifference(y)
+`mean_sterr(x)  `
 
 Array manipulation:
 -------------------
