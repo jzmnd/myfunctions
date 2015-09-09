@@ -6,7 +6,7 @@ My functions module comtaining commonly used functions
 Created by Jeremy Smith on 2015-06-05
 University of California, Berkeley
 j-smith@ecs.berkeley.edu
-Version 2.3
+Version 2.4
 
 """
 
@@ -20,7 +20,7 @@ from matplotlib.backends.backend_pdf import FigureCanvasPdf
 from scipy.signal import medfilt
 
 __author__ = "Jeremy Smith"
-__version__ = "2.3"
+__version__ = "2.4"
 
 
 def adjAvSmooth(dataarray, N=10):
@@ -47,6 +47,12 @@ def weibullPlot(dataarray):
 	ecdf = np.array(ecdf)
 	weibull = np.log(-np.log(1 - ecdf[:-1]))
 	return np.log(datasorted)[:-1], weibull, datasorted, ecdf
+
+
+def findNearest(arr, val):
+	"""Finds Nearest Element in Array to val"""
+	i = (np.abs(arr - val)).argmin()
+	return i, arr[i]
 
 
 def numDiff(y, x):
@@ -196,6 +202,8 @@ def csvImport(datafile, path, headerlength):
 			header.append(splitline)
 		colhead = dfile.readline().strip().split(',')    # Column headers
 		for h in colhead:
+			if h == '':
+				continue
 			data[h] = []
 		for line in dfile:
 			splitline = line.strip().split(',')
@@ -203,7 +211,7 @@ def csvImport(datafile, path, headerlength):
 				continue
 			for i, a in enumerate(splitline):
 				if a == '':
-					a = 0
+					continue
 				data[colhead[i]].append(float(a))
 	return data, header
 
