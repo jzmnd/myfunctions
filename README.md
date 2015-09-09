@@ -1,4 +1,4 @@
-# My Functions Module
+#My Functions Module
 
 Some useful functions by Jeremy Smith
 
