@@ -6,7 +6,7 @@ My functions module comtaining commonly used functions
 Created by Jeremy Smith on 2015-06-05
 University of California, Berkeley
 j-smith@ecs.berkeley.edu
-Version 2.4
+Version 2.5
 
 """
 
@@ -17,10 +17,11 @@ import numpy as np
 from matplotlib.ticker import ScalarFormatter
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_pdf import FigureCanvasPdf
+import seaborn
 from scipy.signal import medfilt
 
 __author__ = "Jeremy Smith"
-__version__ = "2.4"
+__version__ = "2.5"
 
 
 def adjAvSmooth(dataarray, N=10):
@@ -330,6 +331,7 @@ def quickPlot(filename, path, datalist, xlabel="x", ylabel="y", xrange=["auto", 
 	if "plots" not in os.listdir(path):
 		os.mkdir(os.path.join(path, "plots"))
 	coltab = col*10
+	seaborn.set_context("notebook", rc={"lines.linewidth": 1.0})
 	formatter = ScalarFormatter(useMathText=True)
 	formatter.set_scientific(True)
 	formatter.set_powerlimits((-2, 3))
