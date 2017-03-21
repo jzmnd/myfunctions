@@ -1,19 +1,42 @@
 #! /usr/bin/env python
 """
 myfunctions.py
-My functions module comtaining commonly used functions
+My functions module containing commonly used functions
+
+- Math
+-- adjAvSmooth(dataarray, N=10)
+-- weibullPlot(dataarray)
+-- numInt(function, a, b, step)
+-- numDiff(y, x)
+-- numDifference(y)
+-- mean_sterr(x)
+- Array manipulation
+-- findNearest(arr, val)
+-- outputMultiList(data)
+- File import
+-- paImport(datafile, path, ext_cut=6)
+-- paImportLV(datafile, path, ext_cut=7)
+-- paImportIV(datafile, path, ext_cut=6)
+-- paramImport(paramfile, path, param_no=3)
+-- paImportImpSpec(datafile, path, ext_cut=9)
+-- csvImport(datafile, path, headerlength)
+-- csvBiasStressImport(datafile, path)
+- File output
+-- dataOutput(filename, path, datalist, format='%.1f\t %e\t %e\t %e\n')
+-- dataOutputHead(filename, path, datalist, headerlist, format_d='%.1f\t %e\t %e\t %e\n', format_h='%s\n')
+-- dataOutputGen(filename, path, datalist)
+-- quickPlot(filename, path, datalist, xlabel="x", ylabel="y", xrange=["auto", "auto"], yrange=["auto", "auto"], yscale="linear", xscale="linear", col=["r","b"])
 
 Created by Jeremy Smith on 2015-06-05
-University of California, Berkeley
-j-smith@ecs.berkeley.edu
-Version 2.5
+Modified 2017-03-20
+j.smith.03@cantab.net
+Version 3.0
 
 """
 
 import sys
 import os
 import numpy as np
-
 from matplotlib.ticker import ScalarFormatter
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_pdf import FigureCanvasPdf
@@ -21,7 +44,13 @@ import seaborn
 from scipy.signal import medfilt
 
 __author__ = "Jeremy Smith"
-__version__ = "2.5"
+__version__ = "3.0"
+
+EPS0 = 8.85418782e-12
+QELEC = 1.60217662e-19
+HBAR = 1.0545718e-34
+MELEC = 9.10938356e-31
+KBOLZ = 1.38064852e-23
 
 
 def adjAvSmooth(dataarray, N=10):
@@ -141,6 +170,27 @@ def paramImport(paramfile, path, param_no=3):
 			for i in range(param_no):
 				params[i][name] = float(values[i])
 	return params
+
+
+def paImportIV(datafile, path, ext_cut=6):
+	"""Importer for LabView Format IV Files"""
+	device_name = datafile[:-ext_cut].strip()
+	headers = ["Vbias", "Imeas"]
+	print device_name
+	data = {}
+	with open(os.path.join(path, datafile), 'r') as dfile:
+		for h in headers:
+			data[h] = []
+		dfile.readline()
+		for line in dfile:
+			a = line.strip().split('\t')
+			if float(a[0]) == 0:
+				continue
+			if len(a) == 1:
+				continue
+			for i in range(len(a)):
+				data[headers[i]].append(float(a[i]))
+	return data, device_name
 
 
 def paImportLV(datafile, path, ext_cut=7):

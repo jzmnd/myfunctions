@@ -3,9 +3,9 @@
 from distutils.core import setup
 
 setup(name = 'myfunctions',
-	version = '2.5',
+	version = '3.0',
 	author = 'Jeremy Smith',
-	author_email = 'j-smith@eecs.berkeley.edu',
-	url = 'http://ink.eecs.berkeley.edu',
+	author_email = 'j.smith.03@cantab.net',
+	url = 'http://jeremysmithscientist.com',
 	py_modules = ['myfunctions'],
 	)

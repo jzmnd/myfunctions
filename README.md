@@ -1,6 +1,6 @@
 #My Functions Module
 
-Some useful functions by Jeremy Smith
+Some useful scientific and file processing functions by Jeremy Smith
 
 Function List:
 --------------
