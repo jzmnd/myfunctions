@@ -1,4 +1,4 @@
-#My Functions Module
+# My Functions Module
 
 Some useful scientific and file processing functions by Jeremy Smith
 
