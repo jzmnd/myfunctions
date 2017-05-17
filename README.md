@@ -15,6 +15,7 @@ Math:
 
 Array manipulation:  
 `findNearest(arr, val)`  
+`resized(arr, s)`
 `outputMultiList(data)`  
 
 File import:  

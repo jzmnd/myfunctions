@@ -13,6 +13,7 @@ My functions module containing commonly used functions
 - Array manipulation
 -- findNearest(arr, val)
 -- outputMultiList(data)
+-- resized(arr, s)
 - File import
 -- paImport(datafile, path, ext_cut=6)
 -- paImportLV(datafile, path, ext_cut=7)
@@ -30,7 +31,7 @@ My functions module containing commonly used functions
 Created by Jeremy Smith on 2015-06-05
 Modified 2017-03-20
 j.smith.03@cantab.net
-Version 3.0
+Version 3.1
 
 """
 
@@ -44,13 +45,14 @@ import seaborn
 from scipy.signal import medfilt
 
 __author__ = "Jeremy Smith"
-__version__ = "3.0"
+__version__ = "3.1"
 
 EPS0 = 8.85418782e-12
 QELEC = 1.60217662e-19
 HBAR = 1.0545718e-34
 MELEC = 9.10938356e-31
 KBOLZ = 1.38064852e-23
+FARA = 96485.3399
 
 
 def adjAvSmooth(dataarray, N=10):
@@ -79,10 +81,15 @@ def weibullPlot(dataarray):
 	return np.log(datasorted)[:-1], weibull, datasorted, ecdf
 
 
-def findNearest(arr, val):
-	"""Finds Nearest Element in Array to val"""
-	i = (np.abs(arr - val)).argmin()
-	return i, arr[i]
+def numInt(function, a, b, step):
+	"""Numerical Integration of a Function with x=a and x=b Limits"""
+	x = np.array([float(x)*step for x in range(int(a/step), int(b/step)+1)])
+	y = function(x)
+	trpsum = 0
+	for i, yi in enumerate(y[:-1]):
+		trap = (x[i+1]-x[i])*(y[i+1]+yi)/2
+		trpsum += trap
+	return trpsum
 
 
 def numDiff(y, x):
@@ -105,17 +112,6 @@ def numDifference(y):
 	return diff
 
 
-def numInt(function, a, b, step):
-	"""Numerical Integration of a Function with x=a and x=b Limits"""
-	x = np.array([float(x)*step for x in range(int(a/step), int(b/step)+1)])
-	y = function(x)
-	trpsum = 0
-	for i, yi in enumerate(y[:-1]):
-		trap = (x[i+1]-x[i])*(y[i+1]+yi)/2
-		trpsum += trap
-	return trpsum
-
-
 def mean_sterr(x):
 	"""Mean and Standard Error Function"""
 	n, mean, std = len(x), 0, 0
@@ -126,6 +122,19 @@ def mean_sterr(x):
 		std = std + (a - mean)**2
 	std = np.sqrt(std/float(n - 1))
 	return mean, std/np.sqrt(n)
+
+
+def findNearest(arr, val):
+	"""Finds Nearest Element in Array to val"""
+	i = (np.abs(arr - val)).argmin()
+	return i, arr[i]
+
+
+def resized(arr, s):
+    """Returns resized array padded with zeros"""
+    tmparr = np.copy(arr)
+    tmparr.resize(s)
+    return tmparr
 
 
 def outputMultiList(data):
@@ -269,7 +278,6 @@ def csvImport(datafile, path, headerlength):
 
 def csvBiasStressImport(datafile, path):
 	"""Importer for Bias Stress Test csv Files from EasyExpert"""
-
 	datalist_transfer = []
 	datalist_stress = []
 	data_transfer = {}
